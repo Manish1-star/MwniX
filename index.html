@@ -13,7 +13,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             height: 100vh;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
@@ -29,7 +29,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+            color: white;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
@@ -48,14 +48,11 @@
             align-items: center;
             justify-content: center;
             font-size: 1.25rem;
-            color: white;
         }
 
         .header h1 {
             font-size: 1.5rem;
             font-weight: 700;
-            color: white;
-            letter-spacing: -0.025em;
         }
 
         .messages-container {
@@ -70,29 +67,38 @@
 
         .message {
             display: flex;
-            max-width: 70%;
+            max-width: 75%;
             padding: 1rem 1.25rem;
             border-radius: 1.125rem;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             word-wrap: break-word;
             animation: slideIn 0.3s ease-out;
         }
 
         .user-message {
             align-self: flex-end;
-            background: rgba(255, 255, 255, 0.95);
+            background: #ffffff;
             color: #1f2937;
             border-bottom-right-radius: 0.375rem;
-            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
         }
 
         .ai-message {
             align-self: flex-start;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.12);
             backdrop-filter: blur(20px);
             color: white;
-            border-bottom-left-radius: 0.375rem;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom-left-radius: 0.375rem;
+        }
+
+        .typing-indicator {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 1.25rem;
+            color: rgba(255, 255, 255, 0.8);
+            font-style: italic;
         }
 
         .input-container {
@@ -102,7 +108,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             gap: 1rem;
-            align-items: center;
+            align-items: flex-end;
         }
 
         .message-input {
@@ -111,155 +117,4 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 2rem;
             background: rgba(255, 255, 255, 0.9);
-            color: #1f2937;
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.2s ease;
-            resize: none;
-            max-height: 120px;
-            line-height: 1.4;
-        }
-
-        .message-input:focus {
-            border-color: rgba(59, 130, 246, 0.5);
-            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-        }
-
-        .send-button {
-            width: 48px;
-            height: 48px;
-            border: none;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .send-button:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
-        }
-
-        .send-button:active {
-            transform: translateY(0);
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .messages-container::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .messages-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
-        }
-
-        .messages-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-        }
-
-        .messages-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-    </style>
-</head>
-<body>
-    <div class="header">
-        <div class="header-content">
-            <div class="logo">🤖</div>
-            <h1>MwniX</h1>
-        </div>
-    </div>
-
-    <div class="messages-container" id="messagesContainer">
-        <!-- Messages will be dynamically added here -->
-    </div>
-
-    <div class="input-container">
-        <textarea 
-            id="messageInput" 
-            class="message-input" 
-            placeholder="Type your message here..." 
-            rows="1"
-            onkeypress="handleKeyPress(event)"
-        ></textarea>
-        <button class="send-button" onclick="sendMessage()" title="Send message">
-            →
-        </button>
-    </div>
-
-    <script>
-        const messagesContainer = document.getElementById('messagesContainer');
-        const messageInput = document.getElementById('messageInput');
-
-        // Predefined professional responses
-        const professionalResponses = [
-            "Hello! How can I assist you today? Please let me know what you would like help with.",
-            "That's an interesting question. Let me provide you with a comprehensive response.",
-            "I understand your query. Here's the information you requested:",
-            "Could you please clarify or provide additional details so I can give you a more accurate response?",
-            "Thank you for your message. Is there anything specific you would like me to elaborate on?",
-            "I appreciate your question. Let me explain this in detail:",
-            "That's a valid point. Would you like me to explore this topic further?",
-            "Let me provide you with a clear and structured response to your query."
-        ];
-
-        function addMessage(text, isUser) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isUser ? 'user-message' : 'ai-message'}`;
-            messageDiv.textContent = text;
-            messagesContainer.appendChild(messageDiv);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-
-        function sendMessage() {
-            const message = messageInput.value.trim();
-            if (message === '') return;
-
-            addMessage(message, true);
-            messageInput.value = '';
-
-            // Simulate typing delay and professional response
-            setTimeout(() => {
-                const response = professionalResponses[Math.floor(Math.random() * professionalResponses.length)];
-                addMessage(response, false);
-            }, 1200 + Math.random() * 1500);
-        }
-
-        function handleKeyPress(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
-                sendMessage();
-            }
-        }
-
-        // Auto-resize textarea
-        messageInput.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-        });
-
-        // Welcome message
-        window.addEventListener('load', function() {
-            addMessage("Welcome to MwniX. I am your professional AI assistant. How may I assist you today?", false);
-        });
-    </script>
-</body>
-</html>
-powered by MwNisH 
+            color: #1
